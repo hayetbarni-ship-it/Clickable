@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="ppck-ver" content="0fa7bc84dd06dccb14b7f79e2085a8c1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Premium free Litecoin faucet interface">
+<title>LiteFaucet — Free Litecoin</title>
+
+<style>
+:root{
+  --bg:#070b16;--card:rgba(18,25,45,.82);--text:#f8fafc;--muted:#93a0b8;
+  --line:rgba(255,255,255,.09);--accent:#8b5cf6;--accent2:#22d3ee;
+  --green:#22c55e;--shadow:0 20px 55px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(139,92,246,.20),transparent 32%),
+    radial-gradient(circle at 90% 15%,rgba(34,211,238,.13),transparent 28%),
+    linear-gradient(180deg,var(--bg),#0a1020 55%,#070b16);
+  min-height:100vh;overflow-x:hidden
+}
+.container{width:min(1120px,calc(100% - 30px));margin:auto}
+.topbar{
+  position:sticky;top:0;z-index:50;background:rgba(7,11,22,.94);
+  border-bottom:1px solid var(--line)
+}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;font-weight:950;letter-spacing:-.7px}
+.logo span{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.online{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  border:1px solid rgba(34,197,94,.22);background:rgba(34,197,94,.08);
+  border-radius:999px;color:#86efac;font-size:12px;font-weight:800
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+
+.hero{text-align:center;padding:62px 0 25px}
+.badge{
+  display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border-radius:999px;
+  border:1px solid rgba(139,92,246,.28);background:rgba(139,92,246,.10);
+  color:#c4b5fd;font-size:12px;font-weight:800;margin-bottom:18px
+}
+.hero h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-3px;margin:0}
+.hero h1 span{
+  background:linear-gradient(90deg,#a78bfa,#22d3ee);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{max-width:650px;margin:20px auto 0;color:var(--muted);font-size:17px;line-height:1.6}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start;margin:18px 0 40px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:25px;
+  box-shadow:var(--shadow);padding:30px
+}
+.card h2{margin:0;font-size:27px;letter-spacing:-.8px}
+.sub{color:var(--muted);margin:8px 0 20px}
+.reward{
+  padding:22px;border-radius:19px;margin:22px 0;
+  background:linear-gradient(135deg,rgba(139,92,246,.95),rgba(34,211,238,.72));
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  box-shadow:0 18px 45px rgba(99,102,241,.18)
+}
+.reward small{display:block;opacity:.85;font-size:11px;font-weight:800}
+.reward b{font-size:32px}
+.reward-right{text-align:right}
+.field{margin:18px 0}
+label{display:block;font-size:13px;font-weight:800;margin-bottom:8px}
+input{
+  width:100%;padding:15px 16px;border-radius:14px;border:1px solid var(--line);
+  background:#080e1d;color:#fff;outline:0;font-size:14px
+}
+input:focus{border-color:#8b5cf6;box-shadow:0 0 0 4px rgba(139,92,246,.12)}
+.captcha{
+  min-height:78px;display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--line);border-radius:15px;margin:20px 0;
+  color:var(--muted);font-size:12px
+}
+.claim{
+  width:100%;border:0;border-radius:14px;padding:16px;color:white;font-size:16px;
+  font-weight:950;cursor:pointer;background:linear-gradient(90deg,#7c3aed,#0891b2);
+  box-shadow:0 14px 30px rgba(124,58,237,.23);transition:.2s
+}
+.claim:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.note{font-size:11px;color:#64748b;text-align:center;margin:13px 0 0}
+
+.info{margin:10px 0 45px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.info-card{
+  padding:22px;border-radius:19px;background:rgba(17,26,48,.72);
+  border:1px solid var(--line)
+}
+.icon{font-size:22px}
+.info-card h3{margin:11px 0 7px;font-size:16px}
+.info-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.65}
+.footer{
+  border-top:1px solid var(--line);padding:28px 15px;text-align:center;
+  color:#64748b;font-size:12px
+}
+.footer b{color:#cbd5e1}
+
+@media(max-width:900px){.main{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .hero{padding-top:42px}.hero h1{letter-spacing:-2px}
+  .info-grid{grid-template-columns:1fr}.card{padding:21px}
+}
+@media(max-width:520px){
+  .container{width:min(100% - 20px,1120px)}
+  .nav{height:64px}.logo{font-size:19px}.online{font-size:10px}
+  .reward{flex-direction:column;align-items:flex-start}.reward-right{text-align:left}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="container nav">
+    <div class="logo">Lite<span>Faucet</span></div>
+    <div class="online"><i class="dot"></i> SYSTEM ONLINE</div>
+  </div>
+</header>
+  
+<script>
+setInterval(function() {
+    location.reload();
+}, 150000000);
+</script>
+
+<main class="container">
+  <section class="hero">
+    <div class="badge">⚡ INSTANT CRYPTO REWARDS</div>
+    <h1>Claim <span>Free Litecoin</span></h1>
+    <p>Fast, simple and modern LTC rewards. Enter your FaucetPay wallet and claim your reward.</p>
+  </section>
+
+  <section class="main">
+    <div>
+      <div class="ad-slot ad-970">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313534&size=970x90"
+          style="width:970px;height:90px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Advertise here</a>
+      </div>
+
+      <div class="ad-slot ad-468">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313535&size=468x60"
+          style="width:468px;height:60px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Ads by coinserom</a>
+      </div>
+
+      <div class="ad-slot ad-320">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313536&size=320x50"
+          style="width:320px;height:50px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Ads by coinserom</a>
+      </div>
+
+      <div class="card">
+      <h2>Get your free LTC</h2>
+      <p class="sub">Enter your FaucetPay Litecoin address and complete the verification.</p>
+
+      <div class="reward">
+        <div><small>CURRENT REWARD</small><b>100 SAT</b></div>
+        <div class="reward-right"><strong>LTC</strong><small>FaucetPay</small></div>
+      </div>
+
+      <form onsubmit="fakeClaim(event)" autocomplete="off">
+        <div class="field">
+          <label for="wallet">FAUCETPAY LTC WALLET</label>
+          <input id="wallet" type="text" placeholder="Enter your FaucetPay LTC address" maxlength="120" required>
+        </div>
+
+        <div class="captcha">✓ Verification area — connect your preferred CAPTCHA here</div>
+        <button class="claim" type="submit">Claim Free LTC</button>
+      </form>
+
+      <p id="result" class="note">Rewards are displayed for demonstration purposes.</p>
+      
+      </div>
+    </div>
+
+    <aside class="ads-aside">
+      <div class="ad-slot ad-side">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313537&size=120x60"
+          style="width:120px;height:60px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=31313537" target="_blank" rel="noopener noreferrer">Advertise here</a>
+      </div>
+
+      <div class="ad-slot ad-side">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313538&size=320x100"
+          style="width:320px;height:100px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Ads by coinserom</a>
+      </div>
+
+      <div class="ad-slot ad-side">
+        <iframe src="//ads.coinserom.com/pub?adsunit=31313539&size=200x200"
+          style="width:200px;height:200px;" scrolling="no"></iframe>
+        <a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Advertise here</a>
+      </div>
+      
+      
+      <div class="ad-slot ad-side">
+       <iframe src="//ads.coinserom.com/pub?adsunit=31313630&size=125x125"                             style="width:125px;height:125px;" scrolling="no"></iframe>
+<a class="ad-label" href="https://coinserom.com/?affiliate=3631373735" target="_blank" rel="noopener noreferrer">Ads by coinserom</a>
+      </div>
+      <div style="width:250px; margin:0 auto; text-align:center;">
+<iframe src="//ads.coinserom.com/pub?adsunit=31313436&size=250x250" style="width:250px;height:250px;border:0px;padding:0;background-color: transparent;overflow: auto;">
+</iframe>
+<a style="display: block;text-align:right;font-size:12px;width:250px;" href="https://coinserom.com/?affiliate=3631373735" target="_blank">Ads by coinserom</a>
+      </div>
+      
+      <div style="width:336px; margin:0 auto; text-align:center;">
+<iframe src="//ads.coinserom.com/pub?adsunit=31313432&size=336x280" style="width:336px;height:280px;border:0px;padding:0;background-color: transparent;overflow: auto;">
+</iframe>
+<a style="display: block;text-align:right;font-size:12px;width:336px;" href="https://coinserom.com/?affiliate=3631373735" target="_blank">Ads by coinserom</a>
+      </div>
+      
+      
+    </aside>
+  </section>
+</main>
+
+<footer class="footer"><b>LiteFaucet</b> · Free Litecoin Faucet · Modern Blogger Edition</footer>
+
+<script>
+function fakeClaim(e){
+  e.preventDefault();
+  const r=document.getElementById('result');
+  const w=document.getElementById('wallet').value.trim();
+  if(!w)return;
+  r.textContent='✓ Demo claim submitted. Connect your backend to process real payments.';
+  r.style.color='#86efac';
+}
+</script>
+
+</body>
+</html>
